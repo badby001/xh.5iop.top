@@ -30,13 +30,12 @@ class AdmUserController extends Controller
         $inp = $request->all();
         $where =
             function ($query) use ($inp) {
-                $query->whereIn('a.add_code', getInjoin(_admCodes()));//数据权限控制
                 if (isset($inp['is_lock'])) {
                     $query->where('a.is_lock', $inp['is_lock'] == "n" ? 1 : 0);
                 }
                 if (isset($inp['key'])) {
                     $query->where('a.open_id', $inp['key']);
-                    $query->orWhere('b.name', 'like', '%' . $inp['key'] . '%');
+                    $query->orWhere('a.name', 'like', '%' . $inp['key'] . '%');
                 }
                 if (isset($inp['role_id'])) {
                     $query->where('c.role_id', $inp['role_id']);
@@ -54,10 +53,9 @@ class AdmUserController extends Controller
                 }
             };
         $db = DB::table('adm_user as a')
-            ->leftJoin('adm_user_info as b', 'a.code', '=', 'b.adm_code')
             ->leftJoin('adm_user_role as c', 'a.id', '=', 'c.adm_id')
-            ->select('a.id', 'a.code', 'a.open_type', 'a.open_id', 'a.is_lock', 'b.sex', 'b.name', 'b.birth_date', 'b.money_ratio', 'a.add_code', 'a.add_time', 'a.up_code', 'a.up_time', 'c.role_id','b.email')
-            ->where(['a.is_del' => 0, 'a.open_type' => 'mobile'])
+            ->select('a.id', 'a.code', 'a.open_id', 'a.is_lock',  'a.name',  'a.add_code', 'a.add_time', 'a.up_code', 'a.up_time', 'c.role_id')
+            ->where(['a.is_del' => 0])
             ->where($where)
             ->orderBy('a.is_lock', 'asc')
             ->orderBy('a.add_time', 'asc')
@@ -77,29 +75,23 @@ class AdmUserController extends Controller
             $dbData[] = [
                 'id' => $redisVal->id,//id
                 'code' => $redisVal->code,//编号
-                'open_type' => $redisVal->open_type,
                 'open_id' => $redisVal->open_id,
                 'is_lock_name' => getIsLock($redisVal->is_lock),//状态
                 'is_lock' => $redisVal->is_lock,//状态
-                'sex' => getSex($redisVal->sex),//性别
                 'name' => $redisVal->name,//姓名
-                'birth_date' => $redisVal->birth_date,//出生日期
-                'money_ratio' => $redisVal->money_ratio ?? 0,//提成比例
                 'role_name' => getRoleName($redisVal->role_id),//权限角色
                 'add_name' => getAdmName($redisVal->add_code),//创建者
                 'add_time' => $redisVal->add_time,//创建时间
                 'up_name' => getAdmName($redisVal->up_code),//最后修改人
                 'up_time' => $redisVal->up_time,//修改时间
-                'email' => $redisVal->email,//email
             ];
         }
         //
         //总记录
         $total = DB::table('adm_user as a')
-            ->leftJoin('adm_user_info as b', 'a.code', '=', 'b.adm_code')
             ->leftJoin('adm_user_role as c', 'a.id', '=', 'c.adm_id')
             ->select('1')
-            ->where(['a.is_del' => 0, 'a.open_type' => 'mobile'])
+            ->where(['a.is_del' => 0])
             ->where($where)
             ->count();
         $data = [];
@@ -120,10 +112,6 @@ class AdmUserController extends Controller
         //
         $db['id'] = '';
         $db['is_lock'] = '';
-        $db['admUserInfo']['sex'] = 1;
-        if (_admAttState() != 2) {
-            return '仅限同业使用, 请在"个人中心"进行"同行认证", 如果已经认证成功, 请重新登录.';
-        }
         return view('.sys.pages.admin.admUserEdit', ['db' => $db, 'role_id' => []]);
     }
 
@@ -150,7 +138,6 @@ class AdmUserController extends Controller
         //
         $db = AdmUser::where('id', $id)
             ->select('id', 'code', 'is_lock')
-            ->with('admUserInfo:adm_code,sex')
             ->get();
         $role = DB::table('adm_user_role')->where('adm_id', $id)->select('role_id')->get();
         $result = json_decode($role, true);
@@ -174,48 +161,18 @@ class AdmUserController extends Controller
         $code = getNewId();
         $adm = new AdmUser();
         $adm['code'] = $code;
-        $adm['open_type'] = 'mobile';
         $adm['open_id'] = $inp['open_id'];
         $adm['pass_word'] = Hash::make($inp['pass_word']);
+        $adm['name'] = $inp['name'];
         $adm['is_lock'] = 0;
         $adm['is_del'] = 0;
         $adm['add_code'] = _admCode();
         $adm['add_time'] = getTime(1);
         if ($adm->save()) {
-            //创建admInfo信息
-            $info = new AdmUserInfo();
-            $info['adm_code'] = $adm['code'];
-            $info['name'] = $inp['name'];
-            $info['sex'] = $inp['sex'] == 0 ? 0 : 1;
-            $info['birth_date'] = $inp['birth_date'];
-            $info['money_ratio'] = $inp['money_ratio'] ?? 0;
-            $info['pub_user_id'] = getErpNewId('user_base');
-            $info['attestation_state'] = 2;
-            $info->save();
-            //
-            //在角色关系表中查找当前账号是否存在, 如果存在则获取主账号, 否则忽略
-            $isGroupDb = AdmGroup::where('adm_code', _admCode())->select('group_number')->first();
-            DB::table('adm_group')->insert(['adm_code' => $code, 'group_number' => $isGroupDb['group_number']]);
             //保存角色
             if ($inp['role_id']) {
                 DB::table('adm_user_role')->insert(['adm_id' => $adm['id'], 'role_id' => $inp['role_id'], 'add_time' => getTime(1)]);
             }
-            //需要往小强的user_bsse表写入联系人信息
-            //主账号在创建子账号时,子账号的公司信息直接使用主账号的公司id
-            $cpyInfo = DB::connection('sqlsrv')->table('User_Base')->where(['ERPID' => 895, 'pubuserId' => _admPubUserId(), 'isDel' => 0])->select('cpyId', 'cpyName')->get()[0];
-            DB::connection('sqlsrv')->table('User_Base')
-                ->insert(array(
-                    'ERPID' => '895',
-                    'code' => '1',
-                    'ID' => $info['pub_user_id'],
-                    'PubUserID' => $info['pub_user_id'],
-                    'CpyID' => $cpyInfo->cpyId,
-                    'trueName' => $inp['name'],
-                    'Mobile' => $inp['open_id'],
-                    'cpyName' => $cpyInfo->cpyName,
-                    'remark' => '从小助手系统中通过主账号创建',
-                    'type' => 1,
-                ));
             //生成redis缓存
             $redisArr['adm_user:' . $adm['id']] = json_encode($adm);
             Redis::mset($redisArr);//提交缓存
@@ -242,19 +199,11 @@ class AdmUserController extends Controller
         if ($inp['pass_word']) {
             $adm['pass_word'] = Hash::make($inp['pass_word']);
         }
+        $adm['name'] = $inp['name'];
         $adm['up_code'] = _admCode();
         $adm['up_time'] = getTime(1);
         $adm->save();
-        //修改admInfo信息
-        AdmUserInfo::where('adm_code', $adm['code'])
-            ->update([
-                'name' => $inp['name'],
-                'sex' => $inp['sex'] == 0 ? 0 : 1,
-                'birth_date' => $inp['birth_date'],
-                'money_ratio' => $inp['money_ratio'] ?? 0,
-            ]);
-
-        //保存角色
+              //保存角色
         if ($inp['role_id']) {
             AdmUserRole::where('adm_id', $id)->delete();
             DB::table('adm_user_role')->insert(['adm_id' => $adm['id'], 'role_id' => $inp['role_id'], 'add_time' => getTime(1)]);

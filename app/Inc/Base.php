@@ -36,19 +36,6 @@ function callApi($data, $apiUrl)
     return $json_res;
 }
 
-//请求外部接口
-function callWebApi($data, $apiUrl)
-{
-    $key = getRandstr(10);
-    $data['token_key'] = $key;
-    $data['token_value'] = setToken($key);//生成token
-    fileLog(['type' => 3, 'info' => '请求外部接口->发送数据包=>', 'data' => $data]);
-    $json_res = apiPost($data, $apiUrl);//调用接口
-    $json_res = json_decode($json_res);//转对象
-    fileLog(['type' => 3, 'info' => '请求外部接口->接收返回结果=>', 'data' => $json_res]);
-    return $json_res;
-}
-
 //生成token,不通过时直接打断
 function setToken($key)
 {
@@ -92,7 +79,6 @@ function apiPost($body, $apiStr)
         'json' => $body,
         'headers' => [
             'Content-type' => 'application/json',
-            'Cookie' => 'fj_login_id=' . _fjLoginId(),
             "Accept" => "application/json"
         ]
     ]);
@@ -446,18 +432,6 @@ function getSex($str)
     }
 }
 
-//订单状态   0正常 1锁定
-function getStatusShow($str)
-{
-    if ($str == '待支付') {
-        return '<span class="layui-btn layui-btn-danger layui-btn-xs">待支付</span>';
-    } elseif ($str == '已确认') {
-        return '<span class="layui-btn layui-btn-warm layui-btn-xs">已确认</span>';
-    } elseif ($str == '已取消') {
-        return '<span class="layui-btn layui-btn-disabled layui-btn-xs">已取消</span>';
-    }
-}
-
 //状态   0正常 1锁定
 function getIsLock($str)
 {
@@ -468,16 +442,6 @@ function getIsLock($str)
     }
 }
 
-//名单状态   0未审核 1已审核
-function getExamine($str)
-{
-    if ($str == 0) {
-        return '<span class="layui-btn layui-btn-danger layui-btn-xs">未审核</span>';
-    } else {
-        return '<span class="layui-btn layui-btn-normal layui-btn-xs">已审核</span>';
-    }
-}
-
 //通用是否   0否 1是
 function getYes($str)
 {
@@ -485,130 +449,6 @@ function getYes($str)
         return '<span class="layui-btn layui-btn-normal layui-btn-xs">是</span>';
     } else {
         return '<span class="layui-btn layui-btn-warm layui-btn-xs">否</span>';
-    }
-}
-
-//状态   0未审核 1已审核
-function getIdType($str)
-{
-    $s = '';
-    switch ($str) {
-        case '01':
-            $s = '身份证';
-            break;
-        case '02':
-            $s = '户口簿';
-            break;
-        case '03':
-            $s = '护照';
-            break;
-        case '04':
-            $s = '军人证件';
-            break;
-        case '07':
-            $s = '港澳身份证';
-            break;
-        case '09':
-            $s = '赴台通行证';
-            break;
-        case '10':
-            $s = '赴台通行证';
-            break;
-        case '25':
-            $s = '港澳居民来往内地通行证';
-            break;
-        default:
-            $s = '其他';
-            break;
-    }
-    return '<span class="layui-btn layui-btn-primary layui-btn-xs">' . $s . '</span>';
-}
-
-
-//同行认证状态
-function getAttestationState($str)
-{
-    $s = '';
-    switch ($str) {
-        case '-1':
-            $s = '认证失败';
-            break;
-        case '0':
-            $s = '未认证';
-            break;
-        case '1':
-            $s = '认证中';
-            break;
-        case '2':
-            $s = '已认证';
-            break;
-        default:
-            $s = '其他';
-            break;
-    }
-    return $s;
-}
-
-
-//供应商
-function getSupName($str)
-{
-    if ($str == '') {
-        return '<span class="layui-btn layui-btn-warm layui-btn-xs">峰景自营</span>';
-    } else {
-        return '<span class="layui-btn layui-btn-normal layui-btn-xs">' . $str . '</span>';
-    }
-}
-
-//操作返回
-function getBaseLineType_type($cc)
-{
-    $cc ? '0' : $cc;
-    $back = "";
-    switch ($cc) {
-        case 0:
-            return '<span class="layui-btn layui-btn-normal layui-btn-xs">国内</span>';
-            break;
-        case 1:
-            return '<span class="layui-btn layui-btn-warm layui-btn-xs">出境</span>';
-            break;
-        case 2:
-            return '<span class="layui-btn layui-btn-xs">周边</span>';
-            break;
-        case 3:
-            return '<span class="layui-btn layui-btn-primary layui-btn-xs">其它</span>';
-            break;
-        case 4:
-            return '<span class="layui-btn layui-btn-primary layui-btn-xs">邮轮</span>';
-            break;
-        default:
-            return '';
-            break;
-    }
-    return $back;
-}
-
-//图片分类
-function getAdType($str)
-{
-    switch ($str) {
-        case 1:
-            return '<fount class="layui-btn layui-btn-primary layui-btn-xs">首页滚动多图</fount>';
-            break;
-        default:
-            break;
-    }
-}
-
-//分组编号
-function getGroupNumber($str)
-{
-    if ($str == -1) {
-        return '<span class="layui-btn layui-btn-danger layui-btn-xs">开发者</span>';
-    } elseif ($str == 0) {
-        return '<span class="layui-btn layui-btn-warm layui-btn-xs">峰景运维</span>';
-    } else {
-        return '<span class="layui-btn layui-btn-normal layui-btn-xs">' . $str . '</span>';
     }
 }
 
@@ -624,60 +464,6 @@ function getUserLoginType($str)
     }
 }
 
-
-//获取商品分类
-function getClassify($str)
-{
-    switch ($str) {
-        case '0':
-            return '<fount class="layui-btn layui-btn-normal layui-btn-xs">跟团游</fount>';
-            break;
-        case '1':
-            return '<fount class="layui-btn layui-btn-normal layui-btn-xs">商品</fount>';
-            break;
-        default:
-            return '<fount class="layui-btn layui-btn-xs layui-btn-primary">未归类</fount>';
-            break;
-    }
-}
-
-//消息通知代码
-function getNoticeCode($str)
-{
-    $type = $str['type'];
-    $data = $str['data'];
-    $array = [];
-    switch ($type) {
-        case 100:
-            $array['fromEmail'] = '123kfj_com@sina.com';
-            $array['fromEmailPwd'] = '6251f10b4f9354a3';
-            $array['stmp'] = 'smtp.sina.com';
-            $array['subject'] = "登陆通知";
-            $array['content'] = "您的帐号已被登陆，如果并非您本人操作，请及时修改密码! \t\n登录帐号：" . $data[0] . "\t\n登录时间：" . getTime(3) . "\t\nIP：" . site()['ip'];
-            $back = $array;
-            break;
-        case 200:
-            $array['fromEmail'] = '123kfj_com@sina.com';
-            $array['fromEmailPwd'] = '6251f10b4f9354a3';
-            $array['stmp'] = 'smtp.sina.com';
-            $array['subject'] = '下单通知';
-            $array['content'] = '您提交的 2019-11-11 由 甘肃省 兰州市 出发的《我是一条测试产品》已预定成功，为避免订单失效，请于 1 分钟内督促游客进行付款！<br>如果并非您本人操作，请忽略本条消息!';
-            $back = $array;
-            break;
-        case 300:
-            $array['fromEmail'] = '123kfj_com@sina.com';
-            $array['fromEmailPwd'] = '6251f10b4f9354a3';
-            $array['stmp'] = 'smtp.sina.com';
-            $array['subject'] = '平台订单通知';
-            $array['content'] = '亲，游客提交了 2019-11-30 由 甘肃省 天水市 出发的《普吉岛·斯米兰.椰子岛4飞9日游，双体帆船旅拍[普吉一地]-出境》行程已预定成功，为避免订单失效，请于 1 分钟内联系游客并通知付款！<br>订单人数： 5 人<br>订单备注： 把4234234被32323个34个34个34234个34个3后期vqvb<br>游客信息： 管理员001 [13040870704]';
-            $back = $array;
-            break;
-        default:
-            $back = '未定义的消息模板';
-            break;
-    }
-    return $back;
-}
 
 //
 //
@@ -749,7 +535,7 @@ function getAdmName($code)
 {
     if ($code) {
         if (!Redis::exists('getAdmName:' . $code)) {
-            $db = AdmUserInfo::where('adm_code', $code)->select('name')->first();
+            $db = AdmUser::where('code', $code)->select('name')->first();
             Redis::set('getAdmName:' . $code, json_encode($db['name']));
             Redis::expire('getAdmName:' . $code, base()['redisTime']);
             $redisData = json_decode(Redis::get("getAdmName:" . $code));
@@ -786,7 +572,7 @@ function getUserRole($v)
     }
     $db = AdmRole::where(['is_del' => 0])
         ->where($where)
-        ->whereIn('add_code', getInjoin(_admCodes()))//数据权限控制
+        ->where('add_code', _admCode())//数据权限控制
         ->select('id', 'code', 'title', 'remarks')
         ->get();
     return $db;
@@ -819,11 +605,7 @@ function getRouteData($s)
     $s ?? 0;
     if ($s == 0) {//获取所有未被删除的路由
         $select = '*';
-        if (_admGroup() > 0) {
-            $where = ['is_sys' => 0];
-        } else {
-            $where = [];
-        }
+        $where = ['is_sys' => 0];
     }
     if ($s == 1) {//获取所有未被删除且为页面的路由 用于作为菜单使用
         $select = '*';
@@ -831,15 +613,11 @@ function getRouteData($s)
     }
     if ($s == 2) {//获取所有路由树(页面+数据+按钮)
         $select = getInjoin('id,father_id,title,spread');
-        if (_admGroup() > 0) {
-            $where =
-                function ($query) {
-                    $query->whereIn('id', explode(',', Redis::get('admPower:' . _admCode())))//数据权限控制
-                    ->where('is_sys', 0);
-                };
-        } else {
-            $where = [];
-        }
+        $where =
+            function ($query) {
+                $query->whereIn('id', explode(',', Redis::get('admPower:' . _admCode())))//数据权限控制
+                ->where('is_sys', 0);
+            };
     }
     if ($s == 3) {//获取所有路由树(页面+数据+按钮) -> 用于权限使用,所有仅需要id和父id
         $select = getInjoin('id,father_id');
@@ -921,16 +699,6 @@ function getRouteTypeData()
         ->get();
     foreach ($data as $k => $v) {
         $list[] = $v['id'];
-    }
-    return $list;
-}
-
-//在写入出发城市和目的地时,用于生成数据组的方法
-function getDepartureCityDestinationeDataValue($str, $val, $type)
-{
-    $list = [];
-    foreach (getInjoin($str) as $k) {
-        $list[] = array('line_id' => $val, 'to_id' => $k, 'type' => $type);
     }
     return $list;
 }
@@ -1064,16 +832,6 @@ function getCitysData()
         $PubProvincesCitiesRedisData = json_decode(Redis::get("PubProvincesCities"));
     }
     return json_encode($PubProvincesCitiesRedisData);
-}
-
-//获取erp中的表id
-function getErpNewId($tableName)
-{
-    $where = ['erpid' => 895, 'table_name' => $tableName];
-    ErpAutoId::where($where)->update(['update_time' => getTime(1)]);
-    ErpAutoId::where($where)->increment('table_id');
-    $db = ErpAutoId::where($where)->select('table_id')->first();
-    return $db->table_id;
 }
 
 function getIsExist($table, $str, $val, $isDel)
@@ -1442,80 +1200,6 @@ function _admName()
     return \Cookie::get('admName');
 }
 
-//获取当前分组名称
-function _admGroup()
-{
-    return \Cookie::get('admGroup');
-}
-
-//获取当前分组adm_codes -> 管理名下的用户
-function _admCodes()
-{
-    return \Cookie::get('admCodes');
-}
-
-//获取当前分组admPubCodes -> 账号之间可以互相开放数据
-function _admPubCodes()
-{
-    return \Cookie::get('admPubCodes');
-}
-
-
-//获取当前账号是否为主账号和子账号  -> 1主账号  0子账号
-function _isAdm()
-{
-    return \Cookie::get('isAdm');
-}
-
-//获取PubUserId 用于关联小强表
-function _admPubUserId()
-{
-    return \Cookie::get('admPubUserId');
-}
-
-//获获取微站用户登录成功后的同行认证身份   1为已认证
-function _admAttState()
-{
-    return \Cookie::get('admAttState');
-}
-
-//获获取微站用户登录成功后的结算价身份  0市场 1同行 2内部
-function _admIsVip()
-{
-    return \Cookie::get('admIsVip');
-}
-
-//获获取微站用户登录成功后的cookie
-function _fjLoginId()
-{
-    return \Cookie::get('fjLoginId');
-}
-
-//获取某个用户的头像
-function _getAdmHead()
-{
-    return \Cookie::get('admHead');
-}
-
-//返回当前账号的手机号码与邮箱
-function _getAdmICQ($code)
-{
-    $db_data = AdmUser::where([
-        'open_type' => 'mobile',
-        'code' => $code,
-        'is_del' => 0
-    ])
-        ->select('code', 'open_id')
-        ->with(['admUserInfo:adm_code,email'])
-        ->first();
-    $data = [
-        'email' => $db_data['admUserInfo']['email'] ?? '',
-        'mobile' => $db_data['open_id'] ?? '',
-    ];
-    return $data;
-}
-
-
 //获取当前私有账号所拥有的路由权限id
 function _admPower()
 {
@@ -1600,7 +1284,6 @@ function _admCache($admCode)
     //redis
     setDelRedis('admMenu:', $admCode);//销毁菜单(数组+字符串)
     setDelRedis('admPower:', $admCode);//菜单及按钮权限值(字符串)
-    setDelRedis('admOnline:', $admCode);//销毁在线人数
     setDelRedis('getAdmName:', $admCode);//销毁与当前账号相关的获取方法
 }
 
@@ -1744,58 +1427,6 @@ function contentStrCn($todo, $str)
 {
     if ($todo !== 'null') {
         $str = str_replace("orderId", "订单号", $str);
-        $str = str_replace("amount", "总金额", $str);
-        $str = str_replace("invoice", "发票内容", $str);
-        $str = str_replace("cpyName", "公司名称", $str);
-        $str = str_replace("minPlanNum", "最低成团人数", $str);
-        $str = str_replace("aduAmount", "成人费用", $str);
-        $str = str_replace("childAcmount", "儿童费用", $str);
-        $str = str_replace("amountAll", "费用合计", $str);
-        $str = str_replace("payTime", "支付日期", $str);
-        $str = str_replace("transactorName", "经办人姓名", $str);
-        $str = str_replace("transactorPhone", "经办人电话", $str);
-        $str = str_replace("other", "其他信息", $str);
-        $str = str_replace("traveler", "游客代表", $str);
-        $str = str_replace("travelmobile", "游客代表电话", $str);
-        $str = str_replace("taxpayerIdentificationNumber", "纳税人编号", $str);
-        $str = str_replace("phone", "电话", $str);
-        $str = str_replace("accBank", "开户行", $str);
-        $str = str_replace("accCard", "账号", $str);
-        $str = str_replace("simDesc", "备注说明", $str);
-        $str = str_replace("files", "附件", $str);
-        $str = str_replace("aduNum", "成人数", $str);
-        $str = str_replace("aduNum1", "小青年人数", $str);
-        $str = str_replace("aduNum2", "老人数", $str);
-        $str = str_replace("adultPrice", "成人价", $str);
-        $str = str_replace("adultPrice1", "小青年价", $str);
-        $str = str_replace("adultPrice2", "老人价", $str);
-        $str = str_replace("chdNum", "小童占床数量", $str);
-        $str = str_replace("chdNum1", "小童不占床数量", $str);
-        $str = str_replace("childPrice", "小童占床价格", $str);
-        $str = str_replace("childPrice1", "小童不占床价格", $str);
-        $str = str_replace("ctName", "联系人电话", $str);
-        $str = str_replace("ctInfo", "联系人电话", $str);
-        $str = str_replace("days", "天数", $str);
-        $str = str_replace("dingPrice", "定金", $str);
-        $str = str_replace("linePlanPriceTitle", "套餐", $str);
-        $str = str_replace("ordBak", "订单备注", $str);
-        $str = str_replace("priceType", "价格类型", $str);
-        $str = str_replace("saleName", "销售", $str);
-        $str = str_replace("sources", "来源", $str);
-        $str = str_replace("open_id", "账号", $str);
-        $str = str_replace("name", "姓名", $str);
-        $str = str_replace("mobile", "联系电话", $str);
-        $str = str_replace("birth_date", "出生日期", $str);
-        $str = str_replace("role_id", "角色编号", $str);
-        $str = str_replace("sex", "性别", $str);
-        $str = str_replace("money_ratio", "提成比例", $str);
-        $str = str_replace("title", "标题", $str);
-        $str = str_replace("remarks", "备注", $str);
-        $str = str_replace("by_sort", "权重", $str);
-        $str = str_replace("content", "内容", $str);
-        $str = str_replace("provinceAndCity", "所在省市", $str);
-        $str = str_replace("addr", "地址", $str);
-        $str = str_replace("postcode", "邮编", $str);
     }
     return $str;
 }

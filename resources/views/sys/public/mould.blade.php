@@ -38,8 +38,8 @@
 
         // 默认加载主页
         index.loadHome({
-            menuPath: '/sys/pages/console',
-            menuName: '<i class="layui-icon layui-icon-home"></i>'
+            menuPath: '/sys/pages/handlingManagement/feedback',
+            menuName: '<i class="layui-icon layui-icon-form"></i>'
         });
 
         // index.openTab({

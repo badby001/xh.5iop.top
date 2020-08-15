@@ -15,10 +15,10 @@
 <body class="page-fill">
 <div class="page-fill" id="login">
     <form class="layui-form">
-        <div class="login_face"><img src="/images/logo.png"></div>
+        <div class="login_face"><h2>用户登录</h2></div>
         <div class="layui-form-item input-item">
-            <label for="open_id">手机号码</label>
-            <input type="text" lay-verify="required|phone" name="open_id" placeholder="请输入手机号码" autocomplete="off"
+            <label for="open_id">用户名</label>
+            <input type="text" lay-verify="required" name="open_id" placeholder="请输入用户名" autocomplete="off"
                    id="open_id" maxlength="11" class="layui-input">
         </div>
         <div class="layui-form-item input-item">
@@ -35,10 +35,6 @@
         </div>
         <div class="layui-form-item">
             <button class="layui-btn layui-block" lay-filter="login" lay-submit="">登录</button>
-        </div>
-        <div class="login-link">
-            <a href="register">注册</a>
-            <a href="forgetPwd">忘记密码?</a>
         </div>
 </div>
 </form>

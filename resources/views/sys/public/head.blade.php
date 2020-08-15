@@ -12,12 +12,6 @@
         </li>
     </ul>
     <ul class="layui-nav layui-layout-right">
-        {{--        <li class="layui-nav-item" lay-unselect>--}}
-        {{--            <a ew-event="message" title="消息">--}}
-        {{--                <i class="layui-icon layui-icon-notice"></i>--}}
-        {{--                <span class="layui-badge-dot"></span>--}}
-        {{--            </a>--}}
-        {{--        </li>--}}
         <li class="layui-nav-item" lay-unselect>
             <a ew-event="note" title="便签"><i class="layui-icon layui-icon-note"></i></a>
         </li>
@@ -29,11 +23,10 @@
         </li>
         <li class="layui-nav-item" lay-unselect>
             <a>
-                <img src="{{_getAdmHead()}}" class="layui-nav-img">
+                <img src="/images/face.jpg" class="layui-nav-img">
                 <cite>{{_admName()}}</cite>
             </a>
             <dl class="layui-nav-child">
-                <dd lay-unselect><a ew-href="/sys/pages/admInfo">个人中心</a></dd>
                 <dd lay-unselect><a ew-href="/sys/pages/admPwd">安全设置</a></dd>
                 <hr>
                 <dd lay-unselect><a ew-event="logout" data-url="/sys/logout">退出</a></dd>

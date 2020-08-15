@@ -1,33 +1,3 @@
-<div class="layui-card-header">主题设置</div>
-<div class="more-theme-list">
-    <div class="more-theme-item active">
-        <img src="assets/module/img/theme-admin.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-cyan">
-        <img src="assets/module/img/theme-cyan.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-white">
-        <img src="assets/module/img/theme-white.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-pink">
-        <img src="assets/module/img/theme-pink.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-colorful">
-        <img src="assets/module/img/theme-colorful.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-blue">
-        <img src="assets/module/img/theme-blue.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-green">
-        <img src="assets/module/img/theme-green.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-purple">
-        <img src="assets/module/img/theme-purple.png"/>
-    </div>
-    <div class="more-theme-item" data-theme="theme-red">
-        <img src="assets/module/img/theme-red.png"/>
-    </div>
-</div>
 <!-- 控制开关 -->
 <div class="layui-form" style="margin: 25px 0;" lay-filter="more-set-form">
     <div class="layui-form-item">

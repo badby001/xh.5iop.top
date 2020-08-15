@@ -64,11 +64,11 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <div class="layui-card-header1" data-step="3" data-intro="您好! 请在文本框内输入账号/姓名"
+                        <div class="layui-card-header1" data-step="3" data-intro="您好! 请在文本框内输入名称/账号"
                              data-position="bottom">
                             <label class="layui-form-label">搜索</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" placeholder="请输入关键字 | 姓名/账号" autocomplete="off"
+                                <input type="text" class="layui-input" placeholder="请输入关键字 | 名称/账号" autocomplete="off"
                                        name="key">
                             </div>
                         </div>
@@ -88,21 +88,15 @@
 <!--js逻辑-->
 <script>
     var json;
-    layui.use(["admin", "element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okLayx", "introJs"], function () {
+    layui.use(["admin", "element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "introJs"], function () {
         let admin = layui.admin;
         let table = layui.table;
         let form = layui.form;
         let laydate = layui.laydate;
         let okLayer = layui.okLayer;
         let okUtils = layui.okUtils;
-        let okLayx = layui.okLayx;
         let introJs = layui.introJs;
         let $ = layui.jquery;
-        okLayx.notice({
-            title: "温馨提示",
-            type: "warning",
-            message: "{!! frame()['message'] !!}"
-        });
         /* 渲染时间选择 */
         laydate.render({
             elem: 'input[name="dateRange"]',
@@ -133,10 +127,7 @@
                     {type: "checkbox", fixed: "left"},
                     {field: "code", title: "编号", width: 100},
                     {field: "open_id", title: "账号", width: 120},
-                    {field: "name", title: "姓名", width: 100},
-                    {field: "birth_date", title: "出生日期", width: 100, sort: true},
-                    {field: "sex", title: "性别", width: 60},
-                    {field: "email", title: "常用邮箱", width: 160},
+                    {field: "name", title: "名称", width: 150},
                     {field: "role_name", title: "角色", width: 100},
                     {
                         field: "is_lock_name",
@@ -146,7 +137,6 @@
                         event: 'log',
                         style: 'cursor: pointer;'
                     },
-                    {field: "money_ratio", title: "提成比例", width: 95, sort: true},
                     {field: "add_name", title: "创建者", width: 90},
                     {field: "add_time", title: "创建时间", width: 145, sort: true},
                     {field: "up_name", title: "最后修改人", width: 100},
@@ -172,8 +162,8 @@
         form.on("submit(search)", function (data) {
             if (data.field.dateRange) {
                 var searchDate = data.field.dateRange.split(' - ');
-                data.field.start_time = searchDate[0]+' 00:00:00.000';
-                data.field.end_time = searchDate[1]+' 23:59:59.999';
+                data.field.start_time = searchDate[0] + ' 00:00:00.000';
+                data.field.end_time = searchDate[1] + ' 23:59:59.999';
             } else {
                 data.field.start_time = '';
                 data.field.end_time = '';
@@ -294,14 +284,14 @@
 
         function add() {
             json = JSON.stringify('');
-            okLayer.open("添加账号", "admUser/create", "90%", "90%", null, function () {
+            okLayer.open("添加账号", "admUser/create", "480px", "380px", null, function () {
                 userTable.reload();
             })
         }
 
         function edit(data) {
             json = JSON.stringify(data);
-            okLayer.open("编辑账号", "admUser/" + data.id + "/edit", "90%", "90%", null, function () {
+            okLayer.open("编辑账号", "admUser/" + data.id + "/edit", "480px", "380px", null, function () {
                 userTable.reload();
             })
         }

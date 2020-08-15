@@ -98,16 +98,10 @@
 }
 
 #login .login_face {
-    margin: -55px auto 20px;
-    width: 100px;
-    height: 100px;
+    margin: 20px auto 20px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    border: 5px solid #fff;
-    overflow: hidden;
-    box-shadow: 0 0 30px #009688;
-    background: #fff
 }
 
 #login .login_face img {

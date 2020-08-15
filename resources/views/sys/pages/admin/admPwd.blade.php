@@ -35,13 +35,6 @@
                    class="layui-input pwd">
         </div>
     </div>
-    {{--    <div class="layui-form-item">--}}
-    {{--        <label class="layui-form-label">确认密码</label>--}}
-    {{--        <div class="layui-input-block">--}}
-    {{--            <input type="password" value="" placeholder="请确认密码" lay-verify="required|confirmPwd"--}}
-    {{--                   class="layui-input pwd">--}}
-    {{--        </div>--}}
-    {{--    </div>--}}
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn" lay-submit="" lay-filter="changePwd">立即修改</button>
@@ -63,16 +56,6 @@
                 /^[\S]{6,18}$/
                 , '密码必须6到18位，且不能出现空格'
             ]
-            // old_pwd: function (value, item) {
-            //    if(value!=''){
-            //        return "旧密码错误，请重新输入！";
-            //     }
-            // },
-            // confirmPwd: function (value, item) {
-            //     if (!new RegExp($("#oldPwd").val()).test(value)) {
-            //         return "两次输入密码不一致，请重新输入！";
-            //     }
-            // },
         });
         //修改密码
         form.on("submit(changePwd)", function (data) {

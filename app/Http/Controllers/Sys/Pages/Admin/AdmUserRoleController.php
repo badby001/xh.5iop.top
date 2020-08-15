@@ -28,7 +28,6 @@ class AdmUserRoleController extends Controller
         $inp = $request->all();
         $where =
             function ($query) use ($inp) {
-                $query->whereIn('add_code', getInjoin(_admCodes()));//数据权限控制
                 if (isset($inp['is_lock'])) {
                     $query->where('is_lock', $inp['is_lock'] == "n" ? 1 : 0);
                 }

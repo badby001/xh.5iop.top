@@ -163,7 +163,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        Overtrue\LaravelFilesystem\Qiniu\QiniuStorageServiceProvider::class,
         /*
          * Package Service Providers...
          */

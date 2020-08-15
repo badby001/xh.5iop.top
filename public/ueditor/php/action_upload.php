@@ -63,17 +63,4 @@ $up = new Uploader($fieldName, $config, $base64);
  */
 
 /* 返回数据 */
-$fileInfo = $up->getFileInfo();
-$file = array(
-    "name" => $fileInfo["title"],
-    "tmp_name" => $_SERVER['DOCUMENT_ROOT'] . $fileInfo["url"]
-);
-$uploadQiniu = $up->uploadImg($file);
-if ($uploadQiniu["code"] == 1) {
-    $fileUrl = $up->getDownloadUrl($uploadQiniu["data"]);
-}
-if (unlink($_SERVER['DOCUMENT_ROOT'] . $fileInfo["url"])) {
-    $fileInfo["unlink"] = 1;
-}
-$fileInfo["url"] = $fileUrl;
-return json_encode($fileInfo);
+return json_encode($up->getFileInfo());

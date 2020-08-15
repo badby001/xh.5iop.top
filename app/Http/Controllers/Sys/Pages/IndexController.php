@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Sys\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Model\Pages\Admin\AdmUser;
-use App\Model\Pages\Admin\AdmUserInfo;
-use App\Model\Pages\XQERPV3\LinePlanOrd;
-use App\Model\Pages\XQERPV3\UserBase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -40,79 +37,6 @@ class IndexController extends Controller
         return view('.sys.pages.console', ['db' => $data]);
     }
 
-    //个人信息页面
-    function admInfo()
-    {
-        //个人用户信息
-        $db = AdmUserInfo::where('adm_code', _admCode())
-            ->first();
-        $db['attestation_state_show'] = getAttestationState($db['attestation_state']);
-        $db['attestation_area_code_value'] = $db['attestation_area_code'] ?? '';
-        $db['attestation_area_title'] = getPubProCit($db['attestation_area_code'])->title ?? '';
-        $db['attestation_area_code'] = getPubProCit($db['attestation_area_code'])->code ?? '';
-        return view('.sys.pages.admin.admInfo', ['db' => $db]);
-    }
-
-    //个人信息更新
-    function admInfoUp(Request $request)
-    {
-        //执行更新
-        $inp = $request->all();
-        $info = $db = AdmUserInfo::where('adm_code', _admCode())
-            ->update(
-                [
-                    'name' => $inp['data']['name'],
-                    'sex' => $inp['data']['sex'] == 'false' ? 0 : 1,
-                    'birth_date' => $inp['data']['birth_date'],
-                    'user_head' => $inp['data']['user_head'] ?? '../images/face.jpg',
-                    'email' => $inp['data']['email'],
-                ]
-            );
-        $bool = AdmUser::where(['code' => _admCode(), 'open_type' => 'mobile'])->update(['up_code' => _admCode(), 'up_time' => getTime(1)]);
-        if ($info || $bool) {
-            $time = 1 * 60 * 12;//缓存时间
-            \Cookie::queue('admName', $inp['data']['name'], $time);
-            \Cookie::queue('admHead', $inp['data']['user_head'], $time);//用户头像
-            //同步更新小强数据库
-            UserBase::where('pubUserId', _admPubUserId())
-                ->update([
-                    'trueName' => $inp['data']['name'],
-                    'sex' => $inp['data']['sex'] == 'false' ? 1 : 0,
-                    'birth' => $inp['data']['birth_date']
-                ]);
-            //
-            opLog('adm_user', [['type' => '基本资料', 'this_id' => _admId(), 'content' => json_encode($inp)]]);//记录日志
-            return getSuccess(1);
-        } else {
-            return getSuccess(2);
-        }
-    }
-
-    //同行认证更新
-    function admAttestationUp(Request $request)
-    {
-        //执行更新
-        $inp = $request->all();
-        $info = $db = AdmUserInfo::where('adm_code', _admCode())
-            ->update(
-                [
-                    'attestation_state' => 1,
-                    'attestation_tourist_agency' => $inp['data']['attestation_tourist_agency'],
-                    'attestation_area' => getPubProCit($inp['data']['attestation_area_code'])->title,
-                    'attestation_area_code' => $inp['data']['attestation_area_code'],
-                    'attestation_address' => $inp['data']['attestation_address'],
-                    'attestation_business_license_img' => $inp['data']['attestation_business_license_img'],
-                ]
-            );
-        $bool = AdmUser::where(['code' => _admCode(), 'open_type' => 'mobile'])->update(['up_code' => _admCode(), 'up_time' => getTime(1)]);
-        if ($info || $bool) {
-            opLog('adm_user', [['type' => '同行认证', 'this_id' => _admId(), 'content' => json_encode($inp)]]);//记录日志
-            return getSuccess(1);
-        } else {
-            return getSuccess(2);
-        }
-    }
-
     //个人密码页面
     function admPwd()
     {
@@ -126,14 +50,14 @@ class IndexController extends Controller
         //执行更新
         $inp = $request->all();
         //查找用户
-        $db = AdmUser::where(['code' => _admCode(), 'open_type' => 'mobile'])
+        $db = AdmUser::where(['code' => _admCode()])
             ->select(['pass_word'])
             ->first();
         $is_pwd = json_encode(Hash::check($inp['data']['old_pwd'], $db['pass_word']));
         if ($is_pwd == 'false') {
             return getSuccess('旧密码错误，请重新输入！');
         }
-        $data = AdmUser::where(['code' => _admCode(), 'open_type' => 'mobile'])
+        $data = AdmUser::where(['code' => _admCode()])
             ->update(['pass_word' => Hash::make($inp['data']['pass_word'])]);
         if ($data) {
             //
