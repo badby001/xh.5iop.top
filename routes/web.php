@@ -67,12 +67,15 @@ Route::group(['prefix' => 'sys/', 'namespace' => 'Sys', 'middleware' => ['isLogi
         //
         //不满意案件待办列表
         Route::group(['prefix' => 'handlingManagement/', 'namespace' => 'Feedback'], function () {
-            //订单列表
+            //列表
             Route::resource('feedback', 'FeedbackController');
             Route::get('feedbackRead', 'FeedbackController@read');//获取页面数据
             Route::post('feedbackTableEdit', 'FeedbackController@tableEdit');//表格编辑
-            Route::post('feedbackCancel', 'FeedbackController@cancel');//取消订单
-            Route::get('feedbackInfo', 'FeedbackController@read');//订单详情
+            Route::post('feedbackCancel', 'FeedbackController@cancel');//取消
+            Route::get('feedbackInfo', 'FeedbackController@read');//详情
+            Route::get('feedbackChuLi/{id}/edit', 'FeedbackController@ChuLi');//处理页面
+            Route::post('feedbackChuLi/{id}', 'FeedbackController@ChuLiUp');//处理页面
+            Route::get('feedbackPrint/{id}', 'FeedbackController@print');//打印
         });
 
         //管理员账号相关

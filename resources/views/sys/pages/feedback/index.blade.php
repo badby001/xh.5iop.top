@@ -142,8 +142,9 @@
                     title: "操作", width: 100, align: "center", fixed: "right", templet: function (d) {
                         var info = "<a href=\"javascript:\" title=\"督办详情\" lay-event=\"info\"><i class=\"ok-icon\">&#xe74a;</i></a>";
                         var edit = "<a href=\"javascript:\" title=\"编辑\" lay-event=\"edit\"><i class=\"layui-icon\">&#xe642;</i></a>";
-                        var chuli = "<a href=\"javascript:\" title=\"处理办件\" lay-event=\"chuli\"><i class=\"layui-icon\">&#xe63a;</i></a>";
-                        return  edit + chuli;
+                        var chuLi = "<a href=\"javascript:\" title=\"处理办件\" lay-event=\"chuLi\"><i class=\"layui-icon\">&#xe63a;</i></a>";
+                        var print = "<a href=\"javascript:\" title=\"打印\" lay-event=\"print\"><i class=\"layui-icon\">&#xe66d;</i></a>";
+                        return edit + chuLi + print;
                     }
                 }
             ]],
@@ -196,8 +197,11 @@
                 case "edit":
                     edit(data);
                     break;
-                case "chuli":
-                    chuli(data.id);
+                case "chuLi":
+                    chuLi(data.id);
+                    break;
+                case "print":
+                    print(data.id);
                     break;
                 case "cancel":
                     cancel(data.id);
@@ -241,6 +245,18 @@
         function edit(data) {
             json = JSON.stringify(data);
             okLayer.open("编辑原始办件", "feedback/" + data.id + "/edit", "100%", "100%", null, function () {
+                dbTable.reload();
+            })
+        }
+
+        function chuLi(id) {
+            okLayer.open("处理办件", "feedbackChuLi/" + id + '/edit', "100%", "100%", null, function () {
+                dbTable.reload();
+            })
+        }
+
+        function print(id) {
+            okLayer.open("打印反馈表", "feedbackPrint/" + id, "100%", "100%", null, function () {
                 dbTable.reload();
             })
         }

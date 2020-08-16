@@ -321,4 +321,132 @@ class FeedbackController extends Controller
     {
         //
     }
+
+
+    public function ChuLi($id)
+    {
+        //
+        $redisVal = json_decode(Redis::get('feedback:' . $id));//读取缓存
+        $dbData[] = [
+            "id" => $redisVal->id,// 21904,//发票id
+            "code" => $redisVal->code,
+            "add_code" => $redisVal->add_code,
+            "add_time" => $redisVal->add_time,
+            "event_number" => $redisVal->event_number,
+            "recording_time" => $redisVal->recording_time,
+            "plaintiff" => $redisVal->plaintiff,
+            "appeal_telephone" => $redisVal->appeal_telephone,
+            "contact_number" => $redisVal->contact_number,
+            "source_of_the_incident" => $redisVal->source_of_the_incident,
+            "event_type" => $redisVal->event_type,
+            "event_title" => $redisVal->event_title,
+            "event_max_category" => $redisVal->event_max_category,
+            "event_min_category" => $redisVal->event_min_category,
+            "appeal_area" => $redisVal->appeal_area,
+            "event_address" => $redisVal->event_address,
+            "recorded_by" => $redisVal->recorded_by,
+            "event_status" => $redisVal->event_status,
+            "emergency_degree" => $redisVal->emergency_degree,
+            "approval_status" => $redisVal->approval_status,
+            "details_of_the_incident" => $redisVal->details_of_the_incident,
+            "attachment_information" => $redisVal->attachment_information,
+            "linked_data" => $redisVal->linked_data,
+            "return_comments" => $redisVal->return_comments,
+            "supervision_opinions" => $redisVal->supervision_opinions,
+            "leaders_instructions" => $redisVal->leaders_instructions,
+            "is_it_public" => $redisVal->is_it_public,
+            "process" => $redisVal->process,
+            "opinions_on_transfer" => $redisVal->opinions_on_transfer,
+            "distribution_time" => $redisVal->distribution_time,
+            "review" => $redisVal->review,
+            "reply_time" => $redisVal->reply_time,
+            "reply_mode" => $redisVal->reply_mode ?? '电话',
+            "reply_annex" => $redisVal->reply_annex,
+            "is_it_solved" => $redisVal->is_it_solved ?? '实际解决',
+            "is_the_handling_attitude_satisfactory" => $redisVal->is_the_handling_attitude_satisfactory ?? '满意',
+            "is_the_result_satisfactory" => $redisVal->is_the_result_satisfactory ?? '满意',
+            "public_feedback" => $redisVal->public_feedback,
+
+        ];
+//         return $dbData[0];
+        return view('.sys.pages.feedback.feedbackChuLi', ['db' => $dbData[0]]);
+    }
+
+
+    public function ChuLiUp(Request $request, $id)
+    {
+        //
+        $inp = $request->all();
+        $data = Feedback::find($id);
+        $data['distribution_time'] = $inp['distribution_time'];
+        $data['public_feedback'] = $inp['public_feedback'];
+        $data['reply_annex'] = $inp['reply_annex'];
+        $data['reply_time'] = $inp['reply_time'];
+        $data['review'] = $inp['review'];
+        $data['opinions_on_transfer'] = $inp['opinions_on_transfer'];
+
+        $data['reply_mode'] = $inp['reply_mode'];
+        $data['is_it_solved'] = $inp['is_it_solved'];
+        $data['is_the_handling_attitude_satisfactory'] = $inp['is_the_handling_attitude_satisfactory'];
+        $data['is_the_result_satisfactory'] = $inp['is_the_result_satisfactory'];
+        if ($data->save()) {
+            //生成redis缓存
+            $redisArr['feedback:' . $data->id] = json_encode($data);
+            Redis::mset($redisArr);//提交缓存
+            //opLog('feedback', [['type' => '添加', 'this_id' => $data->id, 'content' => json_encode($inp)]]);//记录日志
+            return getSuccess(1);
+        } else {
+            return getSuccess(2);
+        }
+    }
+
+
+
+    public function print($id)
+    {
+        //
+        $redisVal = json_decode(Redis::get('feedback:' . $id));//读取缓存
+        $dbData[] = [
+            "id" => $redisVal->id,// 21904,//发票id
+            "code" => $redisVal->code,
+            "add_code" => $redisVal->add_code,
+            "add_time" => $redisVal->add_time,
+            "event_number" => $redisVal->event_number,
+            "recording_time" => $redisVal->recording_time,
+            "plaintiff" => $redisVal->plaintiff,
+            "appeal_telephone" => $redisVal->appeal_telephone,
+            "contact_number" => $redisVal->contact_number,
+            "source_of_the_incident" => $redisVal->source_of_the_incident,
+            "event_type" => $redisVal->event_type,
+            "event_title" => $redisVal->event_title,
+            "event_max_category" => $redisVal->event_max_category,
+            "event_min_category" => $redisVal->event_min_category,
+            "appeal_area" => $redisVal->appeal_area,
+            "event_address" => $redisVal->event_address,
+            "recorded_by" => $redisVal->recorded_by,
+            "event_status" => $redisVal->event_status,
+            "emergency_degree" => $redisVal->emergency_degree,
+            "approval_status" => $redisVal->approval_status,
+            "details_of_the_incident" => $redisVal->details_of_the_incident,
+            "attachment_information" => $redisVal->attachment_information,
+            "linked_data" => $redisVal->linked_data,
+            "return_comments" => $redisVal->return_comments,
+            "supervision_opinions" => $redisVal->supervision_opinions,
+            "leaders_instructions" => $redisVal->leaders_instructions,
+            "is_it_public" => $redisVal->is_it_public,
+            "process" => $redisVal->process,
+            "distribution_time" => $redisVal->distribution_time,
+            "review" => $redisVal->review,
+            "opinions_on_transfer" => $redisVal->opinions_on_transfer,
+            "reply_time" => $redisVal->reply_time,
+            "reply_mode" => $redisVal->reply_mode ?? '电话',
+            "reply_annex" => $redisVal->reply_annex,
+            "is_it_solved" => $redisVal->is_it_solved ?? '实际解决',
+            "is_the_handling_attitude_satisfactory" => $redisVal->is_the_handling_attitude_satisfactory ?? '满意',
+            "is_the_result_satisfactory" => $redisVal->is_the_result_satisfactory ?? '满意',
+            "public_feedback" => $redisVal->public_feedback,
+        ];
+//         return $dbData[0];
+        return view('.sys.pages.feedback.feedbackPrint', ['db' => $dbData[0]]);
+    }
 }
