@@ -22,17 +22,6 @@
             <form class="layui-form toolbar table-tool-mini">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">办件状态</label>
-                        <div class="layui-input-inline">
-                            <select name="status" lay-verify="">
-                                <option value="0" selected>请选择状态</option>
-                                <option value="1">待处理</option>
-                                <option value="2">处理中</option>
-                                <option value="3">已处理</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline">
                         <div class="layui-card-header1" data-step="1" data-intro="您好! 这是时间类型的筛选, 默认有 添加时间 的选项"
                              data-position="bottom">
                             <label class="layui-form-label">日期类型</label>
@@ -111,40 +100,26 @@
                 '<button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="useGuidance">使用指引</button>' +
                 '</ul>' +
                 '</div>',
-            size: "sm",
+            size: "lg",
             cols: [[
                 // {type: "checkbox", fixed: "left"},
-                {field: "event_number", title: "事件编号", width: 120, fixed: 'left'},
+                {field: "event_number", title: "事件编号", width: 120},
                 {field: "recording_time", title: "记录时间", width: 120},
                 {field: "plaintiff", title: "诉求人", width: 80},
-                {field: "appeal_telephone", title: "诉求电话", width: 120},
                 {field: "contact_number", title: "联系电话", width: 120},
-                {field: "source_of_the_incident", title: "事件来源", width: 80},
                 {field: "event_type", title: "事件类型", width: 80},
                 {field: "event_max_category", title: "事件大类", width: 80},
-                {field: "event_min_category", title: "事件小类", width: 80},
                 {field: "event_title", title: "事件标题", width: 180},
                 {field: "details_of_the_incident", title: "事件详情", width: 320},
-                {field: "appeal_area", title: "诉求区域", width: 80},
                 {field: "event_address", title: "事件地址", width: 220},
-                {field: "recorded_by", title: "记录人", width: 80},
-                {field: "event_status", title: "事件状态", width: 80},
                 {field: "emergency_degree", title: "紧急程度", width: 80},
-                {field: "approval_status", title: "审批状态", width: 80},
-                {field: "attachment_information", title: "附件信息", width: 100},
-                {field: "linked_data", title: "关联数据", width: 100},
-                {field: "return_comments", title: "退回意见", width: 100},
-                {field: "supervision_opinions", title: "督办意见", width: 100},
-                {field: "leaders_instructions", title: "领导批示", width: 100},
-                {field: "is_it_public", title: "是否公开", width: 100},
-
                 {
                     title: "操作", width: 100, align: "center", fixed: "right", templet: function (d) {
                         var info = "<a href=\"javascript:\" title=\"督办详情\" lay-event=\"info\"><i class=\"ok-icon\">&#xe74a;</i></a>";
                         var edit = "<a href=\"javascript:\" title=\"编辑\" lay-event=\"edit\"><i class=\"layui-icon\">&#xe642;</i></a>";
                         var chuLi = "<a href=\"javascript:\" title=\"处理办件\" lay-event=\"chuLi\"><i class=\"layui-icon\">&#xe63a;</i></a>";
                         var print = "<a href=\"javascript:\" title=\"打印\" lay-event=\"print\"><i class=\"layui-icon\">&#xe66d;</i></a>";
-                        return edit + chuLi + print;
+                        return edit + '&nbsp;&nbsp;' + chuLi + '&nbsp;&nbsp;' + print;
                     }
                 }
             ]],

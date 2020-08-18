@@ -1395,13 +1395,13 @@ function fileLog($data)
 //通用操作日志
 function opLog($tableNae, $data)
 {
-    $logList = [];
-    foreach ($data as $k => $v) {
-        $v['add_code'] = _admCode() ? _admCode() : $v['add_code'] ?? '0000000000';
-        $v['add_time'] = getTime(1);
-        $logList[] = $v;
-    }
-    return logSystem($tableNae, $logList);
+//    $logList = [];
+//    foreach ($data as $k => $v) {
+//        $v['add_code'] = _admCode() ? _admCode() : $v['add_code'] ?? '0000000000';
+//        $v['add_time'] = getTime(1);
+//        $logList[] = $v;
+//    }
+//    return logSystem($tableNae, $logList);
 }
 
 //日志读取内容转换

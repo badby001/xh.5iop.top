@@ -37,179 +37,90 @@
             <div class="layui-card-header">原件基本信息</div>
             <div class="layui-card-body">
                 <div class="layui-form-item layui-row">
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">事件编号:</label>
                         <div class="layui-input-block">
                             <input name="event_number" placeholder="请输入事件编号" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['event_number']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">记录时间:</label>
                         <div class="layui-input-block">
                             <input name="recording_time" placeholder="请输入记录时间" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['recording_time']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">诉求人:</label>
                         <div class="layui-input-block">
                             <input name="plaintiff" placeholder="请输入诉求人" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['plaintiff']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">诉求电话:</label>
-                        <div class="layui-input-block">
-                            <input name="appeal_telephone" placeholder="请输入诉求电话" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['appeal_telephone']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">联系电话:</label>
                         <div class="layui-input-block">
                             <input name="contact_number" placeholder="请输入联系电话" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['contact_number']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">事件来源:</label>
-                        <div class="layui-input-block">
-                            <input name="source_of_the_incident" placeholder="请输入事件来源" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['source_of_the_incident']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">事件类型:</label>
                         <div class="layui-input-block">
                             <input name="event_type" placeholder="请输入事件类型" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['event_type']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">事件标题:</label>
                         <div class="layui-input-block">
                             <input name="event_title" placeholder="请输入事件标题" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['event_title']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">事件大类:</label>
                         <div class="layui-input-block">
                             <input name="event_max_category" placeholder="请输入事件大类" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['event_max_category']}}" required/>
+                                   lay-verType="tips" lay-verify="required" value="{{$db['event_max_category']}}"
+                                   required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">事件小类:</label>
-                        <div class="layui-input-block">
-                            <input name="event_min_category" placeholder="请输入事件小类" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['event_min_category']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">诉求区域:</label>
-                        <div class="layui-input-block">
-                            <input name="appeal_area" placeholder="请输入诉求区域" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['appeal_area']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">事件地址:</label>
                         <div class="layui-input-block">
                             <input name="event_address" placeholder="请输入事件地址" class="layui-input"
                                    lay-verType="tips" lay-verify="required" value="{{$db['event_address']}}" required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">记录人:</label>
-                        <div class="layui-input-block">
-                            <input name="recorded_by" placeholder="请输入记录人" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['recorded_by']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">事件状态:</label>
-                        <div class="layui-input-block">
-                            <input name="event_status" placeholder="请输入事件状态" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['event_status']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md3">
+                    <div class="layui-inline layui-col-md4">
                         <label class="layui-form-label layui-form-required">紧急程度:</label>
                         <div class="layui-input-block">
                             <input name="emergency_degree" placeholder="请输入紧急程度" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['emergency_degree']}}" required/>
+                                   lay-verType="tips" lay-verify="required" value="{{$db['emergency_degree']}}"
+                                   required/>
                         </div>
                     </div>
-                    <div class="layui-inline layui-col-md3">
-                        <label class="layui-form-label layui-form-required">审批状态:</label>
-                        <div class="layui-input-block">
-                            <input name="approval_status" placeholder="请输入审批状态" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['approval_status']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
+                    <div class="layui-inline">
                         <label class="layui-form-label layui-form-required">事件详情:</label>
-                        <div class="layui-input-block">
-                            <input name="details_of_the_incident" placeholder="请输入事件详情" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['details_of_the_incident']}}" required/>
+                        <div class="layui-input-block" style="width: 710px;">
+                                 <textarea name="details_of_the_incident" placeholder="请输入事件详情" class="layui-textarea"
+                                           lay-verType="tips" lay-verify="required"
+                                           required/>{{$db['details_of_the_incident']}}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label layui-form-required">转办意见:</label>
+                        <div class="layui-input-block" style="width: 710px;">
+                            <textarea name="opinions_on_transfer" placeholder="请输入转办意见" class="layui-textarea"
+                                      lay-verType="tips" lay-verify="required"
+                                      required/>{{$db['opinions_on_transfer']}}</textarea>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="layui-card">
-            <div class="layui-card-header">原件处理信息</div>
-            <div class="layui-card-body">
-                <div class="layui-form-item layui-row">
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">附件信息:</label>
-                        <div class="layui-input-block">
-                            <input name="attachment_information" placeholder="请输入附件信息" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['attachment_information']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">关联数据:</label>
-                        <div class="layui-input-block">
-                            <input name="linked_data" placeholder="请输入关联数据" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['linked_data']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">退回意见:</label>
-                        <div class="layui-input-block">
-                            <input name="return_comments" placeholder="请输入退回意见" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['return_comments']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">督办意见:</label>
-                        <div class="layui-input-block">
-                            <input name="supervision_opinions" placeholder="请输入督办意见" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['supervision_opinions']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">领导批示:</label>
-                        <div class="layui-input-block">
-                            <input name="leaders_instructions" placeholder="请输入领导批示" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['leaders_instructions']}}" required/>
-                        </div>
-                    </div>
-                    <div class="layui-inline layui-col-md6">
-                        <label class="layui-form-label layui-form-required">是否公开:</label>
-                        <div class="layui-input-block">
-                            <input name="is_it_public" placeholder="请输入是否公开" class="layui-input"
-                                   lay-verType="tips" lay-verify="required" value="{{$db['is_it_public']}}" required/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="layui-card">
             <div class="layui-card-header">原件办理过程</div>
             <div class="layui-card-body">

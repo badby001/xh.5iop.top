@@ -22,7 +22,6 @@
 <!-- 主体部分 -->
     <div class="layui-body"></div>
     <!-- 底部 -->
-    @include('.sys.public.foot')
 </div>
 
 <!-- 加载动画 -->
