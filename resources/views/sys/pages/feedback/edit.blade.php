@@ -31,8 +31,6 @@
 <!-- 正文开始 -->
 <form class="layui-form" id="formAdvForm" lay-filter="formAdvForm">
     <div class="layui-fluid" style="padding-bottom: 75px;">
-
-
         <div class="layui-card">
             <div class="layui-card-header">原件基本信息</div>
             <div class="layui-card-body">
@@ -118,6 +116,32 @@
                                       required/>{{$db['opinions_on_transfer']}}</textarea>
                         </div>
                     </div>
+                    <div class="layui-inline layui-col-md7">
+                        <label class="layui-form-label layui-form-required">领导批示:</label>
+                        <div class="layui-inline layui-col-md2">
+                            <div class="layui-input-inline" style="width: 110px;">
+                                <select name="approval_name" lay-verType="tips" lay-verify="required" required>
+                                    <option value="">领导姓名</option>
+                                    <option value="1">书记</option>
+                                    <option value="2">副书记</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md6">
+                            <div class="layui-input-inline" style="width: 350px;">
+                                <input name="approval_proposal" placeholder="请输入批示建议" class="layui-input"
+                                       lay-verType="tips" lay-verify="required" value="{{$db['event_address']}}"
+                                       required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline layui-col-md2">
+                            <div class="layui-input-inline" style="width: 232px;">
+                                <input id="approval_time" name="approval_time" placeholder="请输入批示时间" class="layui-input"
+                                       lay-verType="tips" lay-verify="required" value="{{$db['event_address']}}"
+                                       required/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,8 +149,42 @@
             <div class="layui-card-header">原件办理过程</div>
             <div class="layui-card-body">
                 <div class="layui-form-item layui-row">
-                    <script id="process" name="process" type="text/plain"
-                            style="width:100%;height:360px;">{!! $db['process'] !!}</script>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">市级结果:</label>
+                        <div class="layui-input-block">
+                             <textarea name="process" placeholder="请输入市级办理结果" class="layui-textarea"
+                                       style="height: 160px;"
+                                       lay-verType="tips" lay-verify="required"
+                                       required/>{{$db['process']}}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">区级结果:</label>
+                        <div class="layui-input-block">
+                              <textarea name="process" placeholder="请输入区级办理结果" class="layui-textarea"
+                                        style="height: 160px;"
+                                        lay-verType="tips" lay-verify="required"
+                                        required/>{{$db['process']}}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">街道结果:</label>
+                        <div class="layui-input-block">
+                            <textarea name="process" placeholder="请输入街道办理结果" class="layui-textarea"
+                                      style="height: 160px;"
+                                      lay-verType="tips" lay-verify="required"
+                                      required/>{{$db['process']}}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-inline layui-col-md3">
+                        <label class="layui-form-label">社区结果:</label>
+                        <div class="layui-input-block">
+                             <textarea name="process" placeholder="请输入社区办理结果" class="layui-textarea"
+                                       style="height: 160px;"
+                                       lay-verType="tips" lay-verify="required"
+                                       required/>{{$db['process']}}</textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -139,18 +197,21 @@
     {{csrf_field()}}
 </form>
 <!--js逻辑-->
-@include('.sys.public.ueditor')
 <script type="text/javascript">
-    layui.use(["admin", "form", "okUtils", "okLayer"], function () {
+    layui.use(["admin", "form", "okUtils", "okLayer", 'laydate'], function () {
         let admin = layui.admin;
         let form = layui.form;
         let okUtils = layui.okUtils;
         let okLayer = layui.okLayer;
+        let laydate = layui.laydate;
         let $ = layui.jquery;
-        UE.getEditor('process').focus();
         form.val("filter", eval('(' + parent.json + ')'));
         admin.removeLoading();
-
+        laydate.render({
+            elem: '#approval_time',
+            type: 'datetime',
+            trigger: 'click'
+        });
         form.on("submit(edit)", function (data) {
             okUtils.ajax("{{url('sys/pages/handlingManagement/feedback/'.$db['id'])}}", "{{$db['id']?'put':'post'}}", data.field, true).done(function (response) {
                 okLayer.greenTickMsg(response.msg, function () {

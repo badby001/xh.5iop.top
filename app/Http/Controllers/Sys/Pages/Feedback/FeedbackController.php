@@ -327,6 +327,11 @@ class FeedbackController extends Controller
         //
         $redisVal = json_decode(Redis::get('feedback:' . $id));//读取缓存
 
+        $department_consultation_unit = '';
+        foreach (getInjoin($redisVal->department_consultation_unit) as $k => $v) {
+            $department_consultation_unit = '"' . $v . '",' . $department_consultation_unit;
+        }
+
         $reply_mode = '';
         foreach (getInjoin($redisVal->reply_mode) as $k => $v) {
             $reply_mode = '"' . $v . '",' . $reply_mode;
@@ -353,6 +358,8 @@ class FeedbackController extends Controller
             //"appeal_telephone" => $redisVal->appeal_telephone,
             "contact_number" => $redisVal->contact_number,
             //"source_of_the_incident" => $redisVal->source_of_the_incident,
+            "department_consultation_unit_old" => $redisVal->department_consultation_unit,
+            "department_consultation_unit" => '[' . $department_consultation_unit . ']',
             "event_type" => $redisVal->event_type,
             "event_title" => $redisVal->event_title,
             "event_max_category" => $redisVal->event_max_category,
@@ -378,9 +385,9 @@ class FeedbackController extends Controller
             "reply_mode_old" => $redisVal->reply_mode,
             "reply_mode" => '[' . $reply_mode . ']',
             "reply_annex" => $redisVal->reply_annex,
-            "is_it_solved" => $redisVal->is_it_solved ?? '实际解决',
-            "is_the_handling_attitude_satisfactory" => $redisVal->is_the_handling_attitude_satisfactory ?? '满意',
-            "is_the_result_satisfactory" => $redisVal->is_the_result_satisfactory ?? '满意',
+            "is_it_solved" => $redisVal->is_it_solved ?? '',
+            "is_the_handling_attitude_satisfactory" => $redisVal->is_the_handling_attitude_satisfactory,
+            "is_the_result_satisfactory" => $redisVal->is_the_result_satisfactory ?? '',
             "public_feedback" => $redisVal->public_feedback,
             "review3" => $redisVal->review3 ?? '',
             "multi_sector_coordination3_old" => $redisVal->multi_sector_coordination3,
@@ -409,21 +416,21 @@ class FeedbackController extends Controller
         $data = Feedback::find($id);
         $data['distribution_time'] = $inp['distribution_time'];
         $data['public_feedback'] = $inp['public_feedback'];
-        $data['reply_annex'] = $inp['reply_annex']??'';
+        $data['reply_annex'] = $inp['reply_annex'] ?? '';
         $data['reply_time'] = $inp['reply_time'];
         $data['review'] = $inp['review'];
-        $data['reply_mode'] =$inp['reply_mode'];
-        $data['is_it_solved'] = $inp['is_it_solved'];
-        $data['is_the_handling_attitude_satisfactory'] = $inp['is_the_handling_attitude_satisfactory'];
-        $data['is_the_result_satisfactory'] = $inp['is_the_result_satisfactory'];
+        $data['reply_mode'] = $inp['reply_mode'];
+        $data['is_it_solved'] = $inp['is_it_solved'] ?? '';
+        $data['is_the_handling_attitude_satisfactory'] = $inp['is_the_handling_attitude_satisfactory'] ?? '';
+        $data['is_the_result_satisfactory'] = $inp['is_the_result_satisfactory'] ?? '';
         $data['review3'] = $inp['review3'];
         $data['multi_sector_coordination3'] = $inp['multi_sector_coordination3'];
         $data['reply_time3'] = $inp['reply_time3'];
         $data['reply_mode3'] = $inp['reply_mode3'];
-        $data['reply_annex3'] = $inp['reply_annex3']??'';
-        $data['is_it_solved3'] = $inp['is_it_solved3']??'';
-        $data['is_the_handling_attitude_satisfactory3'] = $inp['is_the_handling_attitude_satisfactory3']??'';
-        $data['is_the_result_satisfactory3'] = $inp['is_the_result_satisfactory3']??'';
+        $data['reply_annex3'] = $inp['reply_annex3'] ?? '';
+        $data['is_it_solved3'] = $inp['is_it_solved3'] ?? '';
+        $data['is_the_handling_attitude_satisfactory3'] = $inp['is_the_handling_attitude_satisfactory3'] ?? '';
+        $data['is_the_result_satisfactory3'] = $inp['is_the_result_satisfactory3'] ?? '';
         $data['public_feedback3'] = $inp['public_feedback3'];
         $data['handling_opinions3'] = $inp['handling_opinions3'];
         $data['instructions_from_person_in_charge3'] = $inp['instructions_from_person_in_charge3'];
